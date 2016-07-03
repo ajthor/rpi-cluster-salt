@@ -3,5 +3,3 @@ salt-provisioner-repo:
     - name: https://github.com/ajthor/rpiomega-salt
     - target: /srv/salt
     - user: pi
-    - require:
-      - pkg: git
