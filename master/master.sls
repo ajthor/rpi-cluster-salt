@@ -1,6 +1,8 @@
-git@github.com:ajthor/rpiomega-salt-provisioner.git:
+salt-provisioner-repo:
   git.latest:
-    - rev: master
+    - name: https://github.com/ajthor/rpiomega-salt
+    - rev: development
     - target: /srv/salt
+    - user: pi
     - require:
-      pkg: git
+      - pkg: git
