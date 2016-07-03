@@ -1,8 +1,8 @@
 base:
-  'G@os:Raspbian':
+  'os:Raspbian':
     - match: grain
-    - common/common
-    - common/b2
+    - common/raspbian/common
+    - common/raspbian/b2
 
   'rpiomega-node-?':
     - nodes/docker
