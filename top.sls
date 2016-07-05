@@ -3,13 +3,13 @@ base:
     - match: grain
     - common/raspbian/common
     - common/raspbian/b2
-
-  'rpiomega-node-?':
-    - nodes/docker
-    - nodes/swarm
+    - common/docker
 
   'rpiomega-master':
     - master/master
     - master/gitlab
-    - master/docker
+    - master/consul
     - master/swarm
+
+  'rpiomega-node-?':
+    - nodes/swarm
