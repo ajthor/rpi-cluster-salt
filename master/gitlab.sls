@@ -19,7 +19,6 @@ gitlab-installation:
     - source: salt://srv/salt/master/templates/gitlab.rb.j2
     - template: jinja
     - defaults:
-      hostname: "{{ grains['host'] }}"
-      port: 8081
+      hostname: "{{ grains['host'] }}.local"
   cmd.run:
     - name: gitlab-ctl reconfigure
