@@ -1,8 +1,7 @@
 base:
-  'os:Raspbian':
-    - match: grain
-    - common/raspbian/common
-    - common/raspbian/b2
+  '*':
+    - common/common
+    - common/b2
     - common/docker
 
   'rpiomega-master':
