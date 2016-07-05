@@ -3,14 +3,13 @@ base:
     - match: grain
     - common/common
     - common/b2
+    - common/docker
 
   'rpiomega-master':
     - master/master
     - master/gitlab
-    - master/docker
     - master/consul
     - master/swarm
 
   'rpiomega-node-?':
-    - nodes/docker
     - nodes/swarm
