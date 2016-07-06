@@ -1,6 +1,7 @@
 docker-repo:
   pkgrepo.managed:
     - name: deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main
+    - file: /etc/apt/sources.list.d/hypriot.list
     - key_url: https://packagecloud.io/gpg.key
 
 docker-installation:
@@ -10,7 +11,7 @@ docker-installation:
       - docker-compose
       - docker-machine
     - require:
-      - docker-repo
+      - pkgrepo: docker-repo
 
 docker-service:
   service.running:

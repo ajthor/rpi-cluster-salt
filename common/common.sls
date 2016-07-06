@@ -4,6 +4,7 @@ common-pkgs:
       - gcc
       - make
       - git
+      - apt-transport-https
 
 python-pkgs:
   pkg.latest:

@@ -9,4 +9,4 @@ b2-CLI:
   cmd.run:
     - name: 'python /tmp/B2_Command_Line_Tool/setyp.py install'
     - require:
-      - pkg: b2-script
+      - git: b2-script
