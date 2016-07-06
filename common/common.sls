@@ -10,14 +10,18 @@ python-pkgs:
     - pkgs:
       - python2.7
       - python3.4
-      - python-pip
 
-pip-pkgs:
+python-pip:
+  pkg.installed: []
+
+docker-py:
   pip.installed:
     - name: docker-py >= 0.6.0
     - require:
-      - pkg: python-pkgs
+      - pkg: python-pip
+
+python-dateutil:
   pip.installed:
     - name: python-dateutil
     - require:
-      - pkg: python-pkgs
+      - pkg: python-pip
