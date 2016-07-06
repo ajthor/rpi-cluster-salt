@@ -1,5 +1,5 @@
 b2:
-  git.present:
+  git.latest:
     - name: https://github.com/Backblaze/B2_Command_Line_Tool.git
     - target: /tmp/B2_Command_Line_Tool
   cmd.run:

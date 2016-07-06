@@ -15,5 +15,5 @@ python-pkgs:
 pip-pkgs:
   pip.installed:
     - name: docker-py >= 0.6.0
-    - requires:
+    - require:
       - pkg: python-pkgs
