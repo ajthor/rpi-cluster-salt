@@ -6,3 +6,5 @@ swarm-master:
     - detch: True
     - ports:
       - 4000
+    - require:
+      - docker-installation

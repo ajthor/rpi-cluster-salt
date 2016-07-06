@@ -17,3 +17,7 @@ pip-pkgs:
     - name: docker-py >= 0.6.0
     - require:
       - pkg: python-pkgs
+  pip.installed:
+    - name: python-dateutil
+    - require:
+      - pkg: python-pkgs
