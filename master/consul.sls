@@ -7,3 +7,5 @@ consul:
     - ports:
       - 8500
     - restart_policy: always
+    - require:
+      - docker-installation

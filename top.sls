@@ -1,6 +1,5 @@
 base:
-  'G@os:Raspbian':
-    - match: grain
+  '*':
     - common/common
     - common/b2
     - common/docker

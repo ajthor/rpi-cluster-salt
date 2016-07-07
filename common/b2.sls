@@ -1,8 +1,5 @@
-b2:
-  git.present:
-    - name: https://github.com/Backblaze/B2_Command_Line_Tool.git
-    - target: /tmp/B2_Command_Line_Tool
-  cmd.run:
-    - name: 'python /tmp/B2_Command_Line_Tool/setyp.py install'
+b2-CLI:
+  pip.installed:
+    - name: b2
     - require:
-      - pkg: common-pkgs
+      - cmd: pip-install
