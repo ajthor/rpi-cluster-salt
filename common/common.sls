@@ -12,8 +12,10 @@ python-pkgs:
       - python2.7
       - python3.4
 
-python-pip:
-  cmd.run: easy_install pip
+pip-install:
+  cmd.run:
+    - name: easy_install pip
+    - unless: which pip
     - require:
       - pkg: python-pkgs
     - reload_modules: True
@@ -22,7 +24,7 @@ docker-py:
   pip.installed:
     - name: docker-py >= 0.6.0
     - require:
-      - pkg: python-pip
+      - cmd: pip-install
 
 python-dateutil:
   pip.installed:
