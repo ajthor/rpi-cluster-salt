@@ -30,4 +30,4 @@ python-dateutil:
   pip.installed:
     - name: python-dateutil
     - require:
-      - pkg: python-pip
+      - cmd: pip-install
