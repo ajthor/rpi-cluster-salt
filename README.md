@@ -4,10 +4,17 @@ Raspberry Pi Omega Salt Provisioner
 This repository is a provisioner for my Raspberry Pi Cluster. I have chosen to provision the cluster with [Salt](https://saltstack.com), and due to the complex nature of setting up a current version of Salt on a Raspberry Pi and configuring it properly, I have decided to bootstrap each node with Ansible. See the rpiomega-bootstrap repo for details.
 
 To use this repository, clone the repo into your Salt `file_roots` directory, specified in `/etc/salt/master` on the master node. The default is `/srv/salt`.
+In the master configuration file, specify an alternate `base` directory if you wish to change where the files are stored.
 
     file_roots:
       base:
       - /srv/salt
+
+Applying the salt states is straightforward. Run `salt '*' state.apply` to apply the state across all nodes. This will:
+
+* Install Common Packages, including Git, Python, PIP, etc.
+* Install & Configure Docker
+* Start Docker Swarm
 
 What is Raspberry Pi Omega?
 ---------------------------
