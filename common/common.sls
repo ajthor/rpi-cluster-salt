@@ -14,7 +14,6 @@ python-pkgs:
 
 python-pip:
   cmd.run: easy_install pip
-    - unless: which pip
     - require:
       - pkg: python-pkgs
     - reload_modules: True
