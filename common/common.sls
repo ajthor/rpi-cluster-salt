@@ -13,7 +13,11 @@ python-pkgs:
       - python3.4
 
 python-pip:
-  pkg.installed: []
+  cmd.run: easy_install pip
+    - unless: which pip
+    - require:
+      - pkg: python-pkgs
+    - reload_modules: True
 
 docker-py:
   pip.installed:
