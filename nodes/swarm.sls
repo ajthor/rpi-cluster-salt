@@ -8,4 +8,4 @@ swarm-node:
       - 2375
     - restart_policy: always
     - require:
-      - docker-installation
+      - pkg: docker-installation

@@ -7,4 +7,4 @@ swarm-master:
     - ports:
       - 4000
     - require:
-      - docker-installation
+      - pkg: docker-installation
