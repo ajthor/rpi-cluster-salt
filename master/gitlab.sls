@@ -32,5 +32,7 @@ gitlab-configuration:
 gitlab-reconfigure:
   cmd.run:
     - name: gitlab-ctl reconfigure
+    - onchanges:
+      - file: gitlab-configuration
     - require:
       - file: gitlab-configuration

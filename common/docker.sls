@@ -13,9 +13,16 @@ docker-installation:
     - require:
       - pkgrepo: docker-repo
 
+docker-user:
+  group.present:
+    - name: docker
+    - members:
+      - pi
+
 docker-service:
   service.running:
     - name: docker
     - enable: True
+    - reload: True
     - require:
       - pkg: docker-installation
