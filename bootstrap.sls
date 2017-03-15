@@ -54,7 +54,7 @@ python:
 
 # Install PIP from the apt Raspbian repo.
 python-pip:
-  pkg.latest:
+  pkg.installed:
     - pkgs:
       - python-pip
       - python3-pip
