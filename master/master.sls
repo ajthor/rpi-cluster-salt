@@ -30,7 +30,7 @@ consul-server:
     - network_mode: host
     - environment:
       - CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}
-    - cmd: agent -server -bind={% ip_address %} -retry-join={% master_host %} -bootstrap-expect=3
+    - cmd: agent -server -bind={{ ip_address }} -retry-join={{ master_host }} -bootstrap-expect=3
     - restart_policy: on-failure:5
 
 # docker run -d --net=host -e 'CONSUL_LOCAL_CONFIG={"leave_on_terminate": true}' consul agent -bind=<external ip> -retry-join=<root agent ip>
