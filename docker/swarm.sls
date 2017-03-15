@@ -3,7 +3,7 @@
 # `salt-run state.orchestrate docker.swarm`
 
 
-{% for node in salt['mine.get']('*', expr_form='nodegroup') %}
+{% for node in salt['saltutil.runner']('cache.grains', tgt='*', expr_form='nodegroup') %}
 
 update-salt-mine-{{ node }}:
   salt.function:

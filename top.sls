@@ -6,5 +6,6 @@ base:
   '*':
     - common/common
     - docker/bootstrap
+    - docker/mine
 
 # NOTE: Docker needs containers for Consul and potentially GitLab.
