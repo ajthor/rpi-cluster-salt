@@ -9,3 +9,6 @@
 #     - restart_policy: always
 #     - require:
 #       - pkg: docker-installation
+
+resin/rpi-raspbian:latest:
+  dockerng.image_present
