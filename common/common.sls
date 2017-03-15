@@ -11,7 +11,7 @@ sudo-user:
 
 # Install common packages for development, such as Git and GCC.
 common:
-  pkg.latest:
+  pkg.installed:
     - pkgs:
       - gcc
       - make
@@ -26,7 +26,7 @@ python:
 
 # Install PIP from the apt Raspbian repo.
 python-pip:
-  pkg.latest:
+  pkg.installed:
     - pkgs:
       - python-pip
       - python3-pip
@@ -40,12 +40,12 @@ nodejs-repo:
     - name: deb https://deb.nodesource.com/node_7.x jessie main
     - file: /etc/apt/sources.list.d/nodesource.list
     - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    - require_in:
-      - pkg: nodejs
 
 nodejs:
-  pkg.latest:
+  pkg.installed:
     - pkgs:
       - nodejs
       - npm
     - refresh: True
+    - require:
+      - pkgrepo: nodejs-repo
