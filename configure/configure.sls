@@ -23,7 +23,7 @@ salt-installation:
 {{ endif }}
     - cwd: /tmp
     - unless: which salt
-    - requires:
+    - require:
       - cmd: salt-bootstrap
 
 # Set up the services for salt.

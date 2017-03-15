@@ -8,6 +8,7 @@ pillar_roots:
 
 fileserver_backend:
   - git
+  - root
 
 gitfs_remotes:
   - https://github.com/ajthor/rpiomega-salt.git
