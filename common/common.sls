@@ -42,7 +42,25 @@ python-pip:
 #       - pkg: python-pip
 
 # Install Node.js on all systems.
-node:
+nodejs-repo:
+  # cmd.run:
+  #   - name: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  pkgrepo.managed:
+    - name: deb https://deb.nodesource.com/node_7.x jessie main
+    - file: /etc/apt/sources.list.d/nodesource.list
+    - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    - refresh_db: true
+    - require_in:
+      - pkg: nodejs
+  # pkgrepo.managed:
+  #   - name: deb-src https://deb.nodesource.com/node_7.x jessie main
+  #   - file: /etc/apt/sources.list.d/nodesource.list
+  #   - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+  #   - refresh_db: true
+  #   - require_in:
+  #     - pkg: nodejs
+
+nodejs:
   pkg.installed:
     - pkgs:
       - nodejs
