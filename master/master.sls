@@ -14,7 +14,7 @@ pip-GitPython:
 # Initialize the swarm.
 docker-swarm-init:
   cmd.run:
-    - name: 'docker swarm init --advertise-addr '
+    - name: 'docker swarm init --advertise-addr {{ master_host }}'
 
 docker-swarm-drain:
   cmd.run:
