@@ -1,6 +1,9 @@
-salt-provisioner-repo:
-  git.latest:
-    - name: https://github.com/ajthor/rpiomega-salt
-    - target: /srv/salt
-    - rev: 'HEAD'
-    - user: pi
+# This state file makes sure the Master is configured properly and has all of
+# the necessary files for the system.
+
+# Make sure GitPython is installed.
+pip-GitPython:
+  pip.installed:
+    - name: GitPython
+    - require:
+      - pkg: python-pip

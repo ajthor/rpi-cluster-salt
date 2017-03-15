@@ -1,14 +1,16 @@
+
+# This is the main list of salt states to apply to each of the nodes in the
+# cluster. We have separate lists for the 'master' and the 'nodes'.
+
 base:
   '*':
     - common/common
-    - common/b2
     - common/docker
 
   'rpiomega-master':
     - master/master
-    - master/gitlab
-    - master/consul
-    - master/swarm
 
   'rpiomega-node-?':
-    - nodes/swarm
+    - nodes/nodes
+
+# NOTE: Docker needs containers for Consul and potentially GitLab.
