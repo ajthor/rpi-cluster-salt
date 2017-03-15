@@ -8,6 +8,7 @@ base:
     - common/docker
 
   'rpiomega-master':
+    - master/mine
     - master/master
 
   'rpiomega-node-?':

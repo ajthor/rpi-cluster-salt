@@ -17,6 +17,10 @@ docker-install:
     - require:
       - cmd: docker-bootstrap
 
+docker-engine:
+  pkg.installed:
+    - require: docker-install
+
 # Ensure that the Docker service is running and enabled to start on boot.
 docker-service:
   service.running:
@@ -37,9 +41,16 @@ pip-docker-py:
     - require:
       - pkg: python-pip
 
-docker-raspbian-image:
-  dockerng.image_present:
-    - name: resin/rpi-raspbian:latest
-    - onlyif: which docker
+# Salt Mine for getting addresses and keys.
+/etc/salt/minion.d/swarm.conf:
+  file.managed:
+    - source: salt://common/swarm.conf
     - require:
-      - pip: pip-docker-py
+      - pkg: docker-engine
+
+# docker-raspbian-image:
+#   dockerng.image_present:
+#     - name: resin/rpi-raspbian:latest
+#     - onlyif: which docker
+#     - require:
+#       - pip: pip-docker-py
