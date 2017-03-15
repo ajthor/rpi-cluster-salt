@@ -9,8 +9,6 @@ update-salt-mine-{{ node }}:
   salt.function:
     - name: mine.update
     - tgt: '*'
-    - require:
-      - salt: docker-swarm-add-manager
 
 {% if loop.first %}
 
