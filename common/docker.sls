@@ -29,3 +29,8 @@ docker-user:
     - name: docker
     - addusers:
       - pi
+
+
+resin/rpi-raspbian:
+  dockerng.image_present:
+    - onlyif: which docker
