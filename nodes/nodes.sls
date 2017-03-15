@@ -13,14 +13,14 @@ docker-swarm-join:
       - pkg: docker-engine
 
 # Start the Consul agent.
-consul-agent:
-  dockerng.running:
-    - image: consul
-    - detach: True
-    - network_mode: host
-    - environment:
-      - CONSUL_LOCAL_CONFIG={"leave_on_terminate": true}
-    - cmd: agent -bind={{ ip_address }} -retry-join={{ master_host }}
-    - restart_policy: on-failure:5
+# consul-agent:
+#   dockerng.running:
+#     - image: consul
+#     - detach: True
+#     - network_mode: host
+#     - environment:
+#       - CONSUL_LOCAL_CONFIG={"leave_on_terminate": true}
+#     - cmd: agent -bind={{ ip_address }} -retry-join={{ master_host }}
+#     - restart_policy: on-failure:5
 
 # docker run -d --net=host -e 'CONSUL_LOCAL_CONFIG={"leave_on_terminate": true}' consul agent -bind=<external ip> -retry-join=<root agent ip>
