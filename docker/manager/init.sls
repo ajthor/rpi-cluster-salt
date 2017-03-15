@@ -1,6 +1,6 @@
 # This file initializes the swarm and configures the first manager.
 
-{% set ip_address = grains['ip4_interfaces']['wlan0'] %}
+{% set ip_address = grains['ip4_interfaces']['wlan0'][0] %}
 
 include:
   - docker.mine
