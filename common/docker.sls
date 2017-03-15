@@ -37,7 +37,7 @@ pip-docker-py:
     - require:
       - pkg: python-pip
 
-resin/rpi-raspbian:
+docker-raspbian-image:
   dockerng.image_present:
+    - name: resin/rpi-raspbian:latest
     - onlyif: which docker
-    - require:
