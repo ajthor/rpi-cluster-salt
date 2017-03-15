@@ -61,7 +61,7 @@ nodejs-repo:
   #     - pkg: nodejs
 
 nodejs:
-  pkg.installed:
+  pkg.latest:
     - pkgs:
       - nodejs
       - npm
