@@ -9,8 +9,6 @@
 docker-swarm-join:
   cmd.run:
     - name: 'docker swarm join --token {{ join_token }} {{ master_host }}:2377'
-    - require:
-      - pkg: docker-engine
 
 # Start the Consul agent.
 # consul-agent:

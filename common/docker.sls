@@ -17,11 +17,6 @@ docker-install:
     - require:
       - cmd: docker-bootstrap
 
-docker-engine:
-  pkg.installed:
-    - require:
-      - cmd: docker-install
-
 # Ensure that the Docker service is running and enabled to start on boot.
 docker-service:
   service.running:

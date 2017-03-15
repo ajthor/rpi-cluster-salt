@@ -15,8 +15,6 @@ pip-GitPython:
 docker-swarm-init:
   cmd.run:
     - name: 'docker swarm init --advertise-addr '
-    - require:
-      - pkg: docker-engine
 
 docker-swarm-drain:
   cmd.run:
