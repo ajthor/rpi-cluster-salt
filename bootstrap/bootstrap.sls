@@ -3,10 +3,6 @@
 # and when bootstrapping new nodes, but does not need to be run continually,
 # which means it is not part of the normal configuration process.
 
-{{ if grains['host'] == 'rpiomega-master' }}
-  {% set master = true %}
-{{ endif }}
-
 # Install Salt on the target system.
 salt-bootstrap:
   cmd.run:
@@ -16,7 +12,8 @@ salt-bootstrap:
 
 salt-installation:
   cmd.run:
-{{ if master }}
+{{ if grains['host'] == 'rpiomega-master' }}
+  {% set master = true %}
     - name: sh bootstrap-salt.sh -M
 {{ else }}
     - name: sh bootstrap-salt.sh
