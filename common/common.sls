@@ -35,11 +35,11 @@ python-pip:
       - pkg: python
 
 # Python libraries for all systems.
-pip-GitPython:
-  pip.installed:
-    - name: GitPython
-    - require:
-      - pkg: python-pip
+# pip-GitPython:
+#   pip.installed:
+#     - name: GitPython
+#     - require:
+#       - pkg: python-pip
 
 # Install Node.js on all systems.
 node:
