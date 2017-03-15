@@ -1,14 +1,12 @@
+# This file configures the workers and joins them to the swarm.
 
-
-{% set ip_address = grains['ip4_interfaces']['wlan0'] %}
-{% set master_host = "rpiomega-master.local" %}
 {% set join_token = salt['mine.get']('*', 'worker_token').items()[0][1] %}
 {% set join_ip = salt['mine.get']('*', 'manager_ip').items()[0][1][0] %}
 
 # Join the Docker swarm.
-docker-swarm-join:
+docker-swarm-join-worker:
   cmd.run:
-    - name: 'docker swarm join --token {{ join_token }} {{ master_host }}:2377'
+    - name: 'docker swarm join --token {{ join_token }} {{ join_ip }}:2377'
 
 # Start the Consul agent.
 # consul-agent:

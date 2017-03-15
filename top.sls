@@ -5,13 +5,6 @@
 base:
   '*':
     - common/common
-    - common/docker
-
-  'rpiomega-master':
-    - master/mine
-    - master/master
-
-  'rpiomega-node-?':
-    - nodes/nodes
+    - docker/bootstrap
 
 # NOTE: Docker needs containers for Consul and potentially GitLab.
