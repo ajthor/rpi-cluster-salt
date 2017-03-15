@@ -1,0 +1,11 @@
+rpiomega-node-1:
+  host: rpiomega-node-1
+  user: pi
+  passwd: raspberry
+  sudo: True
+
+rpiomega-node-2:
+  host: rpiomega-node-2
+  user: pi
+  passwd: raspberry
+  sudo: True
