@@ -18,13 +18,13 @@ docker-swarm-init:
 
 {% for server in salt['saltutil.runner']('cache.grains', tgt='rpiomega-node-?', expr_form='glob') %}
 
+# For the next two iterations, we also create managers. Just for redundancy.
+{% if loop.index < 2 %}
+
 update-salt-mine-{{ server }}:
   salt.function:
     - name: mine.update
     - tgt: '*'
-
-# For the next two iterations, we also create managers. Just for redundancy.
-{% if loop.index < 2 %}
 
 docker-swarm-add-manager-{{ server }}:
   salt.state:

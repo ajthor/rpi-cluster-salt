@@ -3,7 +3,7 @@
 {% set ip_address = grains['ip4_interfaces']['wlan0'][0] %}
 
 include:
-  - docker.mine
+  - swarm.mine
 
 # Initialize the swarm.
 docker-swarm-init:
