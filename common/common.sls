@@ -34,13 +34,6 @@ python-pip:
     - require:
       - pkg: python
 
-# Make sure GitPython is installed.
-pip-GitPython:
-  pip.installed:
-    - name: GitPython
-    - require:
-      - pkg: python-pip
-
 # Install Node.js on all systems.
 # nodejs-repo:
 #   pkgrepo.managed:
@@ -64,6 +57,8 @@ nodejs:
     - pkgs:
       - nodejs
       - npm
-    - refresh: True
+    - unless:
+      - which nodejs
+      - which npm
     - require:
       - cmd: nodejs-repo
