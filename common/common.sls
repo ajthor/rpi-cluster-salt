@@ -47,9 +47,17 @@ pip-GitPython:
 #     - name: deb https://deb.nodesource.com/node_7.x jessie main
 #     - file: /etc/apt/sources.list.d/nodesource.list
 #     - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+nodejs-bootstrap:
+  cmd.run:
+    - name: curl -o nodesetup.bash -sL https://deb.nodesource.com/setup_7.x
+    - cwd: /tmp
+    - unless: which nodejs
+
 nodejs-repo:
   cmd.run:
-    - name: curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+    - name: sudo -E bash nodesetup.bash
+    - cwd: /tmp
+    - unless: which nodejs
 
 nodejs:
   pkg.installed:
