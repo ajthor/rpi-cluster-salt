@@ -1,5 +1,8 @@
-rpiomega-node-1:
-  host: rpiomega-node-1
-  user: pi
-  passwd: raspberry
-  sudo: True
+# Use the following template when adding new nodes to the roster:
+#
+# rpiomega-node-1:
+#   host: rpiomega-node-1.local
+#   user: pi
+#   passwd: raspberry
+#   sudo: True
+#

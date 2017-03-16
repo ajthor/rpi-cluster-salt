@@ -2,7 +2,26 @@
 # necessary for our system to work properly. It is only used when bootstrapping
 # new nodes.
 
+{% if grains['host'] == 'rpiomega-master' %}
+  {% set master = true %}
+  {% set master_host = '127.0.0.1' %}
+{% else %}
+  {% set master = false %}
+  {% set master_host = 'rpiomega-master.local' %}
+{% endif %}
+
 # Install Salt on the target system.
+{% if master %}
+
+salt-packages:
+  pkg.installed:
+    - pkgs:
+      - salt-ssh
+    - unless:
+      - which salt-ssh
+
+{% else %}
+
 salt-bootstrap:
   cmd.run:
     - name: curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com
@@ -14,40 +33,48 @@ salt-installation:
     - name: sh bootstrap-salt.sh
     - cwd: /tmp
     - unless: which salt-minion
-    - requires:
+    - require:
       - cmd: salt-bootstrap
 
-# Set up the services for salt.
+{% endif %}
+
+# Set up the services for salt-minion.
 salt-minion-service:
   service.running:
     - name: salt-minion
     - enable: True
-    - reload: True
     - watch:
       - file: /etc/salt/minion
 
-# Ensure that Python is installed on the system.
-python:
-  pkg.installed:
-    - pkgs:
-      - python2.7
-      - python3.4
-
-# Install PIP from the apt Raspbian repo.
-python-pip:
-  pkg.installed:
-    - pkgs:
-      - python-pip
-      - python3-pip
-    - unless: which pip
-    - require:
-      - pkg: python
-
-# Ensure the configuration is up-to-date on all systems.
+# Ensure the minion configuration is up-to-date on all systems.
 minion-configuration:
   file.managed:
     - name: /etc/salt/minion
     - source: salt://bootstrap/templates/minion
     - template: jinja
     - defaults:
-      master: "rpiomega-master.local"
+      master: {{ master_host }}
+
+{% if master %}
+
+# Set up the services for salt-master.
+salt-master-service:
+  service.running:
+    - name: salt-master
+    - enable: True
+    - watch:
+      - file: /etc/salt/master
+
+# Ensure the master configuration is up-to-date on all systems.
+master-configuration:
+  file.managed:
+    - name: /etc/salt/master
+    - source: salt://bootstrap/templates/master
+
+# Ensure the roster configuration is up-to-date on all systems.
+roster-configuration:
+  file.managed:
+    - name: /etc/salt/roster
+    - source: salt://bootstrap/templates/roster
+
+{% endif %}
