@@ -6,6 +6,5 @@ base:
   '*':
     - common/common
     - common/docker
-    - swarm/mine
 
 # NOTE: Docker needs containers for Consul and potentially GitLab.

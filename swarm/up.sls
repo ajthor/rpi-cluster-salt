@@ -2,30 +2,33 @@
 # salt-call or salt-run with a command like:
 # `salt-run state.orchestrate docker.swarm`
 
+# Initialize the swarm on the Master. This provides a solid entry-point to the swarm that we can use to interact with everything. This way, you only ever need to SSH into the Master.
 
-{% for server, host in salt['mine.get']('*', 'hostnames', expr_form='grain') | dictsort() %}
+update-salt-mine-master:
+  salt.function:
+    - name: mine.update
+    - tgt: '*'
+
+docker-swarm-init:
+  salt.state:
+    - sls: docker.manager.init
+    - tgt: 'rpiomega-master'
+    - require_in:
+      - salt: update-salt-mine-master
+
+{% for server in salt['saltutil.runner']('cache.grains', tgt='rpiomega-node-?', expr_form='glob') %}
 
 update-salt-mine-{{ server }}:
   salt.function:
     - name: mine.update
     - tgt: '*'
 
-# On the first iteration of the loop, we need to initialize the swarm.
-{% if loop.first %}
-
-docker-swarm-init-{{ server }}:
-  salt.state:
-    - sls: docker.manager.init
-    - tgt: 'rpiomega-master'
-    - require_in:
-      - salt: update-salt-mine-{{ server }}
-
 # For the next two iterations, we also create managers. Just for redundancy.
-{% elif loop.index < 3 %}
+{% if loop.index < 2 %}
 
 docker-swarm-add-manager-{{ server }}:
   salt.state:
-    - sls: docker.manager.manager
+    - sls: docker.manager.join
     - tgt: {{ server }}
     - require_in:
       - salt: update-salt-mine-{{ server }}
@@ -35,7 +38,7 @@ docker-swarm-add-manager-{{ server }}:
 
 docker-swarm-add-worker-{{ server }}:
   salt.state:
-    - sls: docker.worker.worker
+    - sls: docker.worker.join
     - tgt: {{ server }}
 
 {% endif %}
