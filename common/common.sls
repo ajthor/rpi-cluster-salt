@@ -42,11 +42,14 @@ pip-GitPython:
       - pkg: python-pip
 
 # Install Node.js on all systems.
+# nodejs-repo:
+#   pkgrepo.managed:
+#     - name: deb https://deb.nodesource.com/node_7.x jessie main
+#     - file: /etc/apt/sources.list.d/nodesource.list
+#     - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
 nodejs-repo:
-  pkgrepo.managed:
-    - name: deb https://deb.nodesource.com/node_7.x jessie main
-    - file: /etc/apt/sources.list.d/nodesource.list
-    - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+  cmd.run:
+    - name: curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 
 nodejs:
   pkg.installed:
