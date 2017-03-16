@@ -31,16 +31,8 @@ docker-user:
       - pi
 
 # Make sure docker-py is installed.
-pip-docker-py:
-  pip.installed:
-    - name: docker-py
-    - require:
-      - pkg: python-pip
-
-
-# docker-raspbian-image:
-#   dockerng.image_present:
-#     - name: resin/rpi-raspbian:latest
-#     - onlyif: which docker
+# pip-docker-py:
+#   pip.installed:
+#     - name: docker-py
 #     - require:
-#       - pip: pip-docker-py
+#       - pkg: python-pip

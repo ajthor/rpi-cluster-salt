@@ -1,6 +1,6 @@
 # This file configures the managers and joins them to the swarm.
 
-{% set join_token = salt['mine.get']('*', 'manager_token').items()[0][1] %}
+{% set join_token = salt['mine.get']('*', 'manager_join_token').items()[0][1] %}
 {% set join_ip = salt['mine.get']('*', 'manager_ip').items()[0][1][0] %}
 
 include:

@@ -24,7 +24,7 @@ python:
       - python2.7
       - python3.4
 
-# Install PIP from the apt Raspbian repo.
+# Install pip from apt.
 python-pip:
   pkg.installed:
     - pkgs:
@@ -35,11 +35,6 @@ python-pip:
       - pkg: python
 
 # Install Node.js on all systems.
-# nodejs-repo:
-#   pkgrepo.managed:
-#     - name: deb https://deb.nodesource.com/node_7.x jessie main
-#     - file: /etc/apt/sources.list.d/nodesource.list
-#     - key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
 nodejs-bootstrap:
   cmd.run:
     - name: curl -o nodesetup.bash -sL https://deb.nodesource.com/setup_7.x
@@ -56,9 +51,7 @@ nodejs:
   pkg.installed:
     - pkgs:
       - nodejs
-      - npm
     - unless:
       - which nodejs
-      - which npm
     - require:
       - cmd: nodejs-repo
