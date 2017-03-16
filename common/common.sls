@@ -66,4 +66,4 @@ nodejs:
       - npm
     - refresh: True
     - require:
-      - pkgrepo: nodejs-repo
+      - cmd: nodejs-repo
