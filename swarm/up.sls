@@ -1,6 +1,6 @@
 # This file starts the swarm on the cluster. It is meant to be used from
 # salt-call or salt-run with a command like:
-# `salt-run state.orchestrate docker.swarm`
+# `sudo salt-run state.orchestrate swarm.up`
 
 # Initialize the swarm on the Master. This provides a solid entry-point to the swarm that we can use to interact with everything. This way, you only ever need to SSH into the Master.
 
@@ -11,7 +11,7 @@ update-salt-mine-master:
 
 docker-swarm-init:
   salt.state:
-    - sls: docker.manager.init
+    - sls: swarm.manager.init
     - tgt: 'rpiomega-master'
     - require_in:
       - salt: update-salt-mine-master
@@ -28,7 +28,7 @@ update-salt-mine-{{ server }}:
 
 docker-swarm-add-manager-{{ server }}:
   salt.state:
-    - sls: docker.manager.join
+    - sls: swarm.manager.join
     - tgt: {{ server }}
     - require_in:
       - salt: update-salt-mine-{{ server }}
@@ -38,7 +38,7 @@ docker-swarm-add-manager-{{ server }}:
 
 docker-swarm-add-worker-{{ server }}:
   salt.state:
-    - sls: docker.worker.join
+    - sls: swarm.worker.join
     - tgt: {{ server }}
 
 {% endif %}
