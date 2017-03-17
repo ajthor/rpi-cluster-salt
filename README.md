@@ -1,6 +1,6 @@
-# Raspberry Pi Omega Salt Provisioner
+# Raspberry Pi Cluster Salt Provisioner
 
-This repo contains instructions and salt scripts that you can use in order to maintain the Raspberry Pi Omega cluster. Follow the instructions below to install Salt and start the Docker Swarm.
+This repo contains instructions and salt scripts that you can use in order to maintain the Raspberry Pi cluster. Follow the instructions below to install Salt and start the Docker Swarm.
 
 ## Setting up the Raspberry Pis
 
@@ -61,7 +61,7 @@ Now, we need to change the hostname of the Pi. The easiest way to achieve this i
 $ sudo raspi-config
 ```
 
-For the 'master', use `raspiomega-master`, and for each 'node', use `raspiomega-node-<#>`, where the '<#>' is replaced by a unique number for each node.
+For the 'master', use `rpi-master`, and for each 'node', use `rpi-node-<#>`, where the '<#>' is replaced by a unique number for each node.
 
 From this point on, each subsequent node can be set up entirely using Salt. However, you will need to manually set up the Master using the instructions below.
 
@@ -71,7 +71,7 @@ From this point on, each subsequent node can be set up entirely using Salt. Howe
 
 Now that we have Raspbian installed on our Raspberry Pis and they are configured to connect to the network, we can start to do the configuration work on the cluster itself.
 
-Raspberry Pi Omega uses SaltStack (Salt) to provision all of the nodes in the cluster. This allows us to manage software and configuration settings across the entire cluster, making sure that all nodes have the same software versions and configuration files. Think of it like copy/paste for an entire device's 'state'.
+The Raspberry Pi Cluster uses SaltStack (Salt) to provision all of the nodes in the cluster. This allows us to manage software and configuration settings across the entire cluster, making sure that all nodes have the same software versions and configuration files. Think of it like copy/paste for an entire device's 'state'.
 
 The first step in setting up our cluster is to install Salt on our Master and get it ready for more nodes.
 
@@ -106,7 +106,7 @@ Now that we have Salt installed on the Master, we need to change the configurati
 $ sudo salt-run state.apply bootstrap.bootstrap
 ```
 
-That's it! Once you are finished, you have successfully installed Salt on the RPiOmega Master.
+That's it! Once you are finished, you have successfully installed Salt on the RPi Master.
 
 #### 2. Configure the Master Manually
 
@@ -128,7 +128,7 @@ fileserver_backend:
   - roots
 
 gitfs_remotes:
-  - https://github.com/ajthor/rpiomega-salt.git
+  - https://github.com/ajthor/rpi-cluster-salt.git
 
 pillar_roots:
   base:
@@ -164,11 +164,11 @@ Next, we need to install salt-minion on each node. This can be done a number of 
 
 If you choose to install salt-minion using salt-ssh, you can install salt-minion via the bootstrap script in the `bootstrap` folder, directly from the master node.
 
-To do this, we first need to edit the roster file on `rpiomega-master` located at `/etc/salt/roster`. Edit the file to include the Raspberry Pi nodes by adding each node as shown below:
+To do this, we first need to edit the roster file on `rpi-master` located at `/etc/salt/roster`. Edit the file to include the Raspberry Pi nodes by adding each node as shown below:
 
 ```
-rpiomega-node-1:
-  host: rpiomega-node-<#>.local
+rpi-node-1:
+  host: rpi-node-<#>.local
   user: pi
   passwd: raspberry
   sudo: True
@@ -177,7 +177,7 @@ rpiomega-node-1:
 Once you have added the node to the roster file, you can bootstrap it and update the configuration using the commands:
 
 ```
-$ sudo salt-ssh -i 'rpiomega-node-<#>' state.apply bootstrap.bootstrap
+$ sudo salt-ssh -i 'rpi-node-<#>' state.apply bootstrap.bootstrap
 ```
 
 Be sure to change '<#>' in the above commands to the unique number you assigned to the node earlier.
@@ -196,7 +196,7 @@ First, we need to accept the keys on the Master by using `salt-key`, and then we
 
 ```
 $ sudo salt-key -A
-$ sudo salt 'rpiomega-node-<#>' state.apply
+$ sudo salt 'rpi-node-<#>' state.apply
 ```
 
 You may run into some errors while provisioning the nodes. If you do, you can try to apply the state again, or you can SSH into the nodes with the errors and try to fix the problems individually. You may also try increasing the timeout for Salt to ensure that the states run all the way through.
@@ -205,4 +205,4 @@ You may run into some errors while provisioning the nodes. If you do, you can tr
 
 ## Start the Swarm
 
-Once your nodes are properly provisioned, you can start the swarm by following the instructions in the [Swarm README](https://github.com/ajthor/rpiomega-salt/swarm).
+Once your nodes are properly provisioned, you can start the swarm by following the instructions in the [Swarm README](https://github.com/ajthor/rpi-cluster-salt/swarm).
