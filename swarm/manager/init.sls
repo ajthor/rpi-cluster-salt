@@ -3,7 +3,7 @@
 {% set ip_address = grains['ip4_interfaces']['wlan0'][0] %}
 
 include:
-  - .mine
+  - ..mine
 
 # Initialize the swarm.
 swarm-init:
