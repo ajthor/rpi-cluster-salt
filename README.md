@@ -1,6 +1,6 @@
 # Raspberry Pi Omega Salt Provisioner
 
-In order to maintain the Raspberry Pi cluster.
+This repo contains instructions and salt scripts that you can use in order to maintain the Raspberry Pi Omega cluster. Follow the instructions below to install Salt and start the Docker Swarm.
 
 ## Setting up the Raspberry Pis
 
@@ -100,15 +100,15 @@ You will also want to install salt-ssh after completing this step so that we can
 
 `$ sudo apt-get install salt-ssh`
 
+Now that we have Salt installed on the Master, we need to change the configuration. You can do this manually, or by running the bootstrap script in the `bootstrap` folder. If you choose to use the bootstrap script, you can skip steps two and three below.
+
+```
+$ sudo salt-run state.apply bootstrap.bootstrap
+```
+
 That's it! Once you are finished, you have successfully installed Salt on the RPiOmega Master.
 
-<!-- ### Setting up SSH
-
-We have already enabled SSH on the Master by using the instructions above. That allowed us to SSH into the Master from another computer without having to connect the Master to a monitor and keyboard to configure it. Now, we need to set up SSH on the Master so that it can connect to the other nodes in the cluster.
-
-To do this, we need to run `ssh-keygen` on the Master. -->
-
-#### 2. Configure the Master
+#### 2. Configure the Master Manually
 
 Now we need to configure the Master and enable GitFS. The easiest way to maintain the latest configuration for the Salt Master is to use GitFS in place of the regular filesystem for Salt. This allows you to keep your Salt configuration in a Git repo, as opposed to on your local Salt Master.
 
@@ -141,9 +141,9 @@ Take a look at [Git Fileserver Backend Walkthrough](https://docs.saltstack.com/e
 
 If you want to have a local configuration, that's fine, too! Take a look at the [Salt Documentation](https://docs.saltstack.com/en/latest/topics/tutorials/states_pt1.html) for more information on configuring Salt.
 
-#### 3. Configure the Minion
+#### 3. Configure the Minion Manually
 
-Even the Master, in most cases, will be managed by salt. However, the Master can't configure itself if you don't configure salt-minion on the device. The Master should have salt-minion installed, but in order to configure the node using Salt, we need to modify `/etc/salt/minion`, and add just a single line to the file.
+Even the Master, in most cases, will be managed by salt. However, the Master can't configure itself if you don't configure salt-minion on the device. The Master should have salt-minion installed, but in order to provision the node using Salt, we need to modify `/etc/salt/minion`, and add just a single line to the file:
 
 ```
 master: 127.0.0.1
@@ -158,11 +158,11 @@ This tells the minion to attempt to reach the Master at the local loopback addre
 Next, we need to install salt-minion on each node. This can be done a number of ways:
 
 - (Recommended) Install salt-minion using salt-ssh.
-- Install salt-minion manually, following the instructions on the [Salt Website](https://docs.saltstack.com/en/latest/topics/installation/debian.html) or by using the [bootstrap script](#using-the-salt-bootstrap-script).
+- Install salt-minion manually.
 
 #### Install salt-minion via salt-ssh
 
-If you choose to install `salt-minion` using salt-ssh, you can install salt-minion via the bootstrap script directly from the master node.
+If you choose to install salt-minion using salt-ssh, you can install salt-minion via the bootstrap script in the `bootstrap` folder, directly from the master node.
 
 To do this, we first need to edit the roster file on `rpiomega-master` located at `/etc/salt/roster`. Edit the file to include the Raspberry Pi nodes by adding each node as shown below:
 
@@ -178,17 +178,31 @@ Once you have added the node to the roster file, you can bootstrap it and update
 
 ```
 $ sudo salt-ssh -i 'rpiomega-node-<#>' state.apply bootstrap.bootstrap
-$ sudo salt 'rpiomega-node-<#>' state.apply
 ```
 
 Be sure to change '<#>' in the above commands to the unique number you assigned to the node earlier.
 
-<!-- $ ssh-keyscan -H rpiomega-node-<#>.local >> ~/.ssh/known_hosts -->
+#### Install salt-minon manually
 
-### Install salt-minon manually
+If you choose to install salt-minon manually, you should follow the instructions on the [Salt Website](https://docs.saltstack.com/en/latest/topics/installation/debian.html) or use the [bootstrap script](#using-the-salt-bootstrap-script), just like you did for the Master.
 
+---
 
+## Provision the Cluster
 
-#### Accept the Keys on the Master
+Now that Salt is installed on all of the nodes in the cluster, we can provision the cluster and apply the latest state to the nodes.
 
-Now we need to accept the keys on the master.
+First, we need to accept the keys on the Master by using `salt-key`, and then we need to apply the default state to our nodes.
+
+```
+$ sudo salt-key -A
+$ sudo salt 'rpiomega-node-<#>' state.apply
+```
+
+You may run into some errors while provisioning the nodes. If you do, you can try to apply the state again, or you can SSH into the nodes with the errors and try to fix the problems individually. You may also try increasing the timeout for Salt to ensure that the states run all the way through.
+
+---
+
+## Start the Swarm
+
+Once your nodes are properly provisioned, you can start the swarm by following the instructions in the [Swarm README](https://github.com/ajthor/rpiomega-salt/swarm).
