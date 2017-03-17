@@ -9,13 +9,13 @@ swarm-start:
   salt.state:
     - sls: swarm.manager.init
     - tgt: 'rpiomega-master'
+    - unless:
+      - docker node inspect self
 
 update-salt-mine:
   salt.function:
     - name: mine.update
     - tgt: '*'
-    - require:
-      - salt: swarm-init
 
 {% for server in salt['saltutil.runner']('cache.grains', tgt='rpiomega-node-?', expr_form='glob') %}
 
