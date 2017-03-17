@@ -20,7 +20,7 @@ update-salt-mine:
 {% for server in salt['saltutil.runner']('cache.grains', tgt='rpiomega-node-?', expr_form='glob') %}
 
 # For the next two iterations, we create managers. Just for redundancy.
-{% if loop.index <= 2 %}
+{% if loop.index < 2 %}
 
 add-manager-{{ server }}:
   salt.state:
