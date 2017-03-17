@@ -11,7 +11,7 @@ sudo-user:
 
 # Install common packages for development, such as Git and GCC.
 common:
-  pkg.latest:
+  pkg.installed:
     - pkgs:
       - gcc
       - make
@@ -24,9 +24,9 @@ python:
       - python2.7
       - python3.4
 
-# Install PIP from the apt Raspbian repo.
+# Install pip from apt.
 python-pip:
-  pkg.latest:
+  pkg.installed:
     - pkgs:
       - python-pip
       - python3-pip
@@ -34,16 +34,24 @@ python-pip:
     - require:
       - pkg: python
 
-# Python libraries for all systems.
-# pip-GitPython:
-#   pip.installed:
-#     - name: GitPython
-#     - require:
-#       - pkg: python-pip
-
 # Install Node.js on all systems.
-node:
+nodejs-bootstrap:
+  cmd.run:
+    - name: curl -o nodesetup.bash -sL https://deb.nodesource.com/setup_7.x
+    - cwd: /tmp
+    - unless: which nodejs
+
+nodejs-repo:
+  cmd.run:
+    - name: sudo -E bash nodesetup.bash
+    - cwd: /tmp
+    - unless: which nodejs
+
+nodejs:
   pkg.installed:
     - pkgs:
       - nodejs
-      - npm
+    - unless:
+      - which nodejs
+    - require:
+      - cmd: nodejs-repo

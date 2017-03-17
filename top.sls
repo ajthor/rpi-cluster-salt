@@ -7,10 +7,4 @@ base:
     - common/common
     - common/docker
 
-  'rpiomega-master':
-    - master/master
-
-  'rpiomega-node-?':
-    - nodes/nodes
-
 # NOTE: Docker needs containers for Consul and potentially GitLab.

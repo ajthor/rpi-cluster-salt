@@ -14,7 +14,7 @@ docker-install:
     - name: sh bootstrap-docker.sh
     - cwd: /tmp
     - unless: which docker
-    - requires:
+    - require:
       - cmd: docker-bootstrap
 
 # Ensure that the Docker service is running and enabled to start on boot.
@@ -29,3 +29,10 @@ docker-user:
     - name: docker
     - addusers:
       - pi
+
+# Make sure docker-py is installed.
+# pip-docker-py:
+#   pip.installed:
+#     - name: docker-py
+#     - require:
+#       - pkg: python-pip

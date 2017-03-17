@@ -2,12 +2,13 @@ file_roots:
   base:
     - /srv/salt
 
-pillar_roots:
-  base:
-    - /srv/pillar
-
 fileserver_backend:
   - git
+  - roots
 
 gitfs_remotes:
   - https://github.com/ajthor/rpiomega-salt.git
+
+pillar_roots:
+  base:
+    - /srv/pillar
