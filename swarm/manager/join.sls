@@ -6,7 +6,7 @@
 include:
   - swarm.mine
 
-docker-swarm-join-manager:
+swarm-join-manager:
   cmd.run:
     - name: 'docker swarm join --token {{ join_token }} {{ join_ip }}:2377'
 

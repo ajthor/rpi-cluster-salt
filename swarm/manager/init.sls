@@ -6,6 +6,6 @@ include:
   - swarm.mine
 
 # Initialize the swarm.
-docker-swarm-init:
+swarm-init:
   cmd.run:
     - name: 'docker swarm init --advertise-addr {{ ip_address }}'
