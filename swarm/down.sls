@@ -7,6 +7,10 @@ clear-salt-mine:
     - tgt: '*'
 
 # Leave the swarm, by force if necessary. Not the best approach, and will fix in a future update.
+{% for server in salt['saltutil.runner']('cache.grains', tgt='*', expr_form='glob') %}
+
 leave-swarm:
   cmd.run:
-    - docker swarm leave --force
+    - name: docker swarm leave --force
+
+{% endfor %}
