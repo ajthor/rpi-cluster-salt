@@ -11,6 +11,19 @@ clear-salt-mine:
 
 swarm-leave-{{ server }}:
   cmd.run:
+    - name: docker swarm leave
+    - onfail:
+      cmd: swarm-demote-{{ server }}
+
+swarm-demote-{{ server }}:
+  cmd.run:
+    - name: docker node demote self
+    - onfail:
+      - cmd: swarm-leave-force-{{ server }}
+
+swarm-leave-force-{{ server }}:
+  cmd.run:
     - name: docker swarm leave --force
+    
 
 {% endfor %}
