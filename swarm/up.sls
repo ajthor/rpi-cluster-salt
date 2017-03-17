@@ -15,7 +15,7 @@ swarm-start:
 update-salt-mine:
   salt.function:
     - name: mine.update
-    - tgt: '*'
+    - tgt: 'rpiomega-master'
 
 {% for server in salt['saltutil.runner']('cache.grains', tgt='rpiomega-node-?', expr_form='glob') %}
 
@@ -30,7 +30,7 @@ add-manager-{{ server }}:
 update-salt-mine-{{ server }}:
   salt.function:
     - name: mine.update
-    - tgt: '*'
+    - tgt: {{ server }}
     - require:
       - salt: add-manager-{{ server }}
 
