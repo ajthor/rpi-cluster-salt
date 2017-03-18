@@ -7,7 +7,7 @@ fileserver_backend:
   - roots
 
 gitfs_remotes:
-  - https://github.com/ajthor/rpiomega-salt.git
+  - https://github.com/ajthor/rpi-cluster-salt.git
 
 pillar_roots:
   base:

@@ -1,5 +1,6 @@
 # This file starts the swarm on the cluster. It is meant to be used from
 # salt-call or salt-run with a command like:
+
 # `sudo salt-run state.orchestrate swarm.up`
 
 # Initialize the swarm on the Master. This provides a solid entry-point to the
@@ -8,18 +9,22 @@
 swarm-start:
   salt.state:
     - sls: swarm.manager.init
-    - tgt: 'rpiomega-master'
+    - tgt: 'rpi-master'
     - unless:
       - docker node inspect self
 
+# Update the Salt Mine to get the join keys for the workers and managers of the
+# swarm.
 update-salt-mine:
   salt.function:
     - name: mine.update
-    - tgt: 'rpiomega-master'
+    - tgt: 'rpi-master'
 
-{% for server in salt['saltutil.runner']('cache.grains', tgt='rpiomega-node-?', expr_form='glob') %}
+# Cycle through each node in the cluster and join them to the swarm as either a
+# manager or as a worker.
+{% for server in salt['saltutil.runner']('cache.grains', tgt='rpi-node-?', expr_form='glob') %}
 
-# For the next two iterations, we create managers. Just for redundancy.
+# For the first two iterations, we create managers. Just for redundancy.
 {% if loop.index <= 2 %}
 
 add-manager-{{ server }}:

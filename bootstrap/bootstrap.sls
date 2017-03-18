@@ -2,12 +2,12 @@
 # necessary for our system to work properly. It is only used when bootstrapping
 # new nodes.
 
-{% if grains['host'] == 'rpiomega-master' %}
+{% if grains['host'] == 'rpi-master' %}
   {% set master = true %}
   {% set master_host = '127.0.0.1' %}
 {% else %}
   {% set master = false %}
-  {% set master_host = 'rpiomega-master.local' %}
+  {% set master_host = 'rpi-master.local' %}
 {% endif %}
 
 # Install Salt on the target system.
