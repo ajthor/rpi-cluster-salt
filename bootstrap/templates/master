@@ -1,0 +1,14 @@
+file_roots:
+  base:
+    - /srv/salt
+
+fileserver_backend:
+  - git
+  - roots
+
+gitfs_remotes:
+  - https://github.com/ajthor/rpi-cluster-salt.git
+
+pillar_roots:
+  base:
+    - /srv/pillar

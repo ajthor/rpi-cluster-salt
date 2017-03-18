@@ -1,28 +1,38 @@
-docker-repo:
-  pkgrepo.managed:
-    - name: deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main
-    - file: /etc/apt/sources.list.d/hypriot.list
-    - key_url: https://packagecloud.io/gpg.key
+# This state file installs Docker using the Docker install script from
+# https://get.docker.com, and configures the Docker service and users for use
+# in the cluster.
 
-docker-installation:
-  pkg.latest:
-    - pkgs:
-      - docker-hypriot
-      - docker-compose
-      - docker-machine
+# Run the Docker install script.
+docker-bootstrap:
+  cmd.run:
+    - name: curl -o bootstrap-docker.sh -sSL https://get.docker.com
+    - cwd: /tmp
+    - unless: which docker
+
+docker-install:
+  cmd.run:
+    - name: sh bootstrap-docker.sh
+    - cwd: /tmp
+    - unless: which docker
     - require:
-      - pkgrepo: docker-repo
+      - cmd: docker-bootstrap
 
-docker-user:
-  group.present:
-    - name: docker
-    - members:
-      - pi
-
+# Ensure that the Docker service is running and enabled to start on boot.
 docker-service:
   service.running:
     - name: docker
     - enable: True
-    - reload: True
-    - require:
-      - pkg: docker-installation
+
+# Configure the default user 'pi' to be a member of the 'docker' group.
+docker-user:
+  group.present:
+    - name: docker
+    - addusers:
+      - pi
+
+# Make sure docker-py is installed.
+# pip-docker-py:
+#   pip.installed:
+#     - name: docker-py
+#     - require:
+#       - pkg: python-pip

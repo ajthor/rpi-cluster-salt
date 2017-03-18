@@ -1,0 +1,8 @@
+# Use the following template when adding new nodes to the roster:
+#
+# rpi-node-1:
+#   host: rpi-node-1.local
+#   user: pi
+#   passwd: raspberry
+#   sudo: True
+#

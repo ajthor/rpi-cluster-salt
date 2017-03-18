@@ -1,14 +1,8 @@
+# This is the main list of salt states to apply to each of the nodes in the
+# cluster. We will apply the common configuration and install Docker on each
+# node.
+
 base:
   '*':
     - common/common
-    - common/b2
     - common/docker
-
-  'rpiomega-master':
-    - master/master
-    - master/gitlab
-    - master/consul
-    - master/swarm
-
-  'rpiomega-node-?':
-    - nodes/swarm

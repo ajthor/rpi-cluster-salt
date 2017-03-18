@@ -1,33 +1,57 @@
-common-pkgs:
-  pkg.latest:
+# This state file installs common development software, such as GCC, make, Git,
+# Python, and Node.js on your system. The complete list can be found by looking
+# at the code below.
+
+# Add the 'pi' user to the 'sudo' group.
+sudo-user:
+  group.present:
+    - name: sudo
+    - addusers:
+      - pi
+
+# Install common packages for development, such as Git and GCC.
+common:
+  pkg.installed:
     - pkgs:
       - gcc
       - make
-      - git
-      - apt-transport-https
+      - git-core
 
-python-pkgs:
-  pkg.latest:
+# Ensure that Python is installed on the system.
+python:
+  pkg.installed:
     - pkgs:
       - python2.7
       - python3.4
 
-pip-install:
-  cmd.run:
-    - name: easy_install pip
+# Install pip from apt.
+python-pip:
+  pkg.installed:
+    - pkgs:
+      - python-pip
+      - python3-pip
     - unless: which pip
     - require:
-      - pkg: python-pkgs
-    - reload_modules: True
+      - pkg: python
 
-docker-py:
-  pip.installed:
-    - name: docker-py >= 0.6.0
-    - require:
-      - cmd: pip-install
+# Install Node.js on all systems.
+nodejs-bootstrap:
+  cmd.run:
+    - name: curl -o nodesetup.bash -sL https://deb.nodesource.com/setup_7.x
+    - cwd: /tmp
+    - unless: which nodejs
 
-python-dateutil:
-  pip.installed:
-    - name: python-dateutil
+nodejs-repo:
+  cmd.run:
+    - name: sudo -E bash nodesetup.bash
+    - cwd: /tmp
+    - unless: which nodejs
+
+nodejs:
+  pkg.installed:
+    - pkgs:
+      - nodejs
+    - unless:
+      - which nodejs
     - require:
-      - cmd: pip-install
+      - cmd: nodejs-repo
