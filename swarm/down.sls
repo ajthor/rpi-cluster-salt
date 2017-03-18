@@ -1,8 +1,10 @@
+# This file forcibly removes the nodes from the swarm. It is experimental and
+# should not be used in production.
 
 {% for server in salt['saltutil.runner']('cache.grains', tgt='*', expr_form='glob') %}
 
 # We need to clear the salt mine so that we can use new values, such as IP
-# addresses and keys.
+# addresses and join keys.
 clear-salt-mine:
   salt.function:
     - name: mine.flush
