@@ -6,14 +6,13 @@ Take a look at [rpi-cluster](https://github.com/ajthor/rpi-cluster) for more inf
 
 ## Salt Scripts
 
-This repo contains Salt scripts for provisioning the cluster, bootstrapping new nodes, and for starting the swarm. See the [wiki](https://github.com/ajthor/rpi-cluster-salt/wiki) for more information.
+This repo contains Salt scripts for provisioning the cluster and for bootstrapping new nodes. See the [wiki](https://github.com/ajthor/rpi-cluster-salt/wiki) for more information.
 
 - [Common](https://github.com/ajthor/rpi-cluster-salt/wiki/Common)
 - [Bootstrap](https://github.com/ajthor/rpi-cluster-salt/wiki/Bootstrap)
-- [Swarm](https://github.com/ajthor/rpi-cluster-salt/wiki/Swarm)
 
 ---
 
 # Contribute
 
-If you would like to contribute to this project, please fork and pull request. I'm happy to support any contributions to this repo.
+If you would like to contribute to this project, please fork and pull request. I'm happy to support any contributions to this project.
