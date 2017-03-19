@@ -5,4 +5,4 @@
 base:
   '*':
     - common/common
-    - common/docker
+    - docker/install
