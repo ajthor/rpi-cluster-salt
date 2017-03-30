@@ -6,4 +6,3 @@ base:
   '*':
     - common/common
     - docker/install
-    - docker/init
