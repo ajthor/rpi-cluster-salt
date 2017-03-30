@@ -2,8 +2,6 @@
 # necessary for our system to work properly. It is only used when bootstrapping
 # new nodes.
 
-{% from '/pillar/add.sls' import add_pillar_data with context %}
-
 {%- if grains['host'] == salt['pillar.get']('config:master_hostname', 'rpi-master') -%}
   {%- set is_master = true -%}
 {%- else -%}
@@ -71,6 +69,11 @@ salt-minion-service:
     - template: jinja
 
 # Add pillar files to master.
-{{ add_pillar_data(['pillar/top.sls', 'pillar/config.sls']) }}
+{%- set pillar_files = ['config.sls', 'top.sls'] -%}
+{%- for file in pillar_files %}
+/srv/pillar/{{ file }}:
+  file.managed:
+    - source: salt://pillar/{{ file }}
+{% endfor -%}
 
 {%- endif -%}
