@@ -1,1 +1,1 @@
-master: {{ salt['pillar.get']('config:cluster:master_ipaddress', master) }}
+master: {{ salt['pillar.get']('config:cluster:master_hostname', master) }}
