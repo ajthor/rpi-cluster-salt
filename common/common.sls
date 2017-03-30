@@ -34,6 +34,12 @@ python-pip:
     - require:
       - pkg: python
 
+# Install pip packages.
+virtualenv:
+  pip.installed:
+    - require:
+      - pkg: python-pip
+
 # Install Node.js on all systems.
 nodejs-bootstrap:
   cmd.run:

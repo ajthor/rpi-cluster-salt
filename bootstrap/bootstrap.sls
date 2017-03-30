@@ -2,16 +2,16 @@
 # necessary for our system to work properly. It is only used when bootstrapping
 # new nodes.
 
-{% if grains['host'] == 'rpi-master' %}
-  {% set master = true %}
-  {% set master_host = '127.0.0.1' %}
-{% else %}
-  {% set master = false %}
-  {% set master_host = 'rpi-master.local' %}
-{% endif %}
+{% from '/pillar/add.sls' import add_pillar_data with context %}
+
+{%- if grains['host'] == salt['pillar.get']('config:master_hostname', 'rpi-master') -%}
+  {%- set is_master = true -%}
+{%- else -%}
+  {%- set is_master = false -%}
+{%- endif -%}
 
 # Install Salt on the target system.
-{% if master %}
+{%- if is_master -%}
 
 salt-packages:
   pkg.installed:
@@ -20,7 +20,7 @@ salt-packages:
     - unless:
       - which salt-ssh
 
-{% else %}
+{%- else -%}
 
 salt-bootstrap:
   cmd.run:
@@ -36,7 +36,7 @@ salt-installation:
     - require:
       - cmd: salt-bootstrap
 
-{% endif %}
+{%- endif -%}
 
 # Set up the services for salt-minion.
 salt-minion-service:
@@ -47,34 +47,30 @@ salt-minion-service:
       - file: /etc/salt/minion
 
 # Ensure the minion configuration is up-to-date on all systems.
-minion-configuration:
+/etc/salt/minion:
   file.managed:
-    - name: /etc/salt/minion
     - source: salt://bootstrap/templates/minion
     - template: jinja
-    - defaults:
-      master: {{ master_host }}
+    - context:
+{%- if is_master -%}
+      master: {{ salt['pillar.get']('config:master_ipaddress') }}
+{%- else -%}
+      master: {{ master_ip }}
+{%- endif -%}
 
-{% if master %}
-
-# Set up the services for salt-master.
-salt-master-service:
-  service.running:
-    - name: salt-master
-    - enable: True
-    - watch:
-      - file: /etc/salt/master
-
-# Ensure the master configuration is up-to-date on all systems.
-master-configuration:
+{%- if is_master -%}
+# Ensure the master configuration is up-to-date.
+/etc/salt/master:
   file.managed:
-    - name: /etc/salt/master
     - source: salt://bootstrap/templates/master
 
-# Ensure the roster configuration is up-to-date on all systems.
-roster-configuration:
+# Ensure the roster configuration file exists.
+/etc/salt/roster:
   file.managed:
-    - name: /etc/salt/roster
     - source: salt://bootstrap/templates/roster
+    - template: jinja
 
-{% endif %}
+# Add pillar files to master.
+{{ add_pillar_data(['pillar/top.sls', 'pillar/config.sls']) }}
+
+{%- endif -%}
