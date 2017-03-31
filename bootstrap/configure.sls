@@ -1,12 +1,22 @@
 # This file configures Salt by making sure the pillar files are on the master
 # and by making sure the configuration files exist on the master and minions.
 
-{% set files = ['top', 'config'] %}
+{% set files = ['config'] %}
 
 {% if grains['host'] == 'rpi-master' %}
 # Master-only configuration. Here, we need to create files that are exclusive
 # to the master. These are things like the pillar files, the master and roster
 # configuration files, etc.
+
+/srv/pillar/top.sls:
+  file.managed:
+    - source: salt://pillar/top.sls
+    - unless: test -f "/srv/pillar/top.sls"
+  file.append:
+    - source: salt://pillar/salt.tmpl
+    - template: jinja
+    - defaults:
+      - files: {{ files }}
 
 # Add pillar files to master.
 {% for f in files %}
@@ -15,13 +25,6 @@
     - source: salt://pillar/{{ f }}.sls
     - unless: test -f "/srv/pillar/{{ f }}.sls"
 {% endfor %}
-
-/srv/pillar/top.sls:
-  file.append:
-    - source: salt://pillar/salt.tmpl
-    - template: jinja
-    - defaults:
-      - files: {{ files }}
 
 # Update the Salt pillar so that it has all relevant data.
 update-salt-pillar:
