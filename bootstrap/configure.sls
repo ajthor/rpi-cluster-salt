@@ -65,8 +65,6 @@ update-salt-pillar:
       # will default to `rpi-master.local`.
       master: {{ salt['pillar.get']('config:master_hostname') }}
 {% endif %}
-    - require:
-      - salt: update-salt-pillar
 
 # Set up the services for salt-minion.
 salt-minion-service:
