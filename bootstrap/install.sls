@@ -6,7 +6,9 @@ salt-bootstrap:
   cmd.run:
     - name: curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com
     - cwd: /tmp
-    - unless: which salt-minion
+    - unless:
+      - which salt-master
+      - which salt-minion
 
 salt-installation:
   cmd.run:
@@ -16,7 +18,9 @@ salt-installation:
     - name: sh bootstrap-salt.sh
 {% endif %}
     - cwd: /tmp
-    - unless: which salt-minion
+    - unless:
+      - which salt-master
+      - which salt-minion
     - require:
       - cmd: salt-bootstrap
 

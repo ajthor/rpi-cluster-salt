@@ -7,9 +7,6 @@ install-salt:
   salt.state:
     - sls: bootstrap.install
     - tgt: '*'
-    - unless:
-      - which salt-master
-      - which salt-minion
 
 configure-salt:
   salt.state:
