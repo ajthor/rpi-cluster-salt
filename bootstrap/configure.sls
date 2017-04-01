@@ -38,6 +38,8 @@ update-salt-pillar:
   file.managed:
     - source: salt://bootstrap/templates/master
     - unless: test -f "/etc/salt/master"
+    - require:
+      - salt: update-salt-pillar
 
 # Ensure the roster configuration file exists.
 /etc/salt/roster:
@@ -45,6 +47,8 @@ update-salt-pillar:
     - source: salt://bootstrap/templates/roster
     - template: jinja
     - unless: test -f "/etc/salt/roster"
+    - require:
+      - salt: update-salt-pillar
 {% endif %}
 
 # Ensure the minion configuration is up-to-date on all systems.
@@ -61,6 +65,8 @@ update-salt-pillar:
       # will default to `rpi-master.local`.
       master: {{ salt['pillar.get']('config:master_hostname') }}
 {% endif %}
+    - require:
+      - salt: update-salt-pillar
 
 # Set up the services for salt-minion.
 salt-minion-service:
