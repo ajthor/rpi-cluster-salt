@@ -56,6 +56,9 @@ update-salt-pillar:
 {% if grains['host'] == 'rpi-master' %}
       master: 127.0.0.1
 {% else %}
+      # NOTE: The template file tries to pull whatever value is in the pillar
+      # for the `master_hostname`. If no hostname is found in the pillar, this
+      # will default to `rpi-master.local`.
       master: {{ salt['pillar.get']('config:master_hostname') }}
 {% endif %}
 

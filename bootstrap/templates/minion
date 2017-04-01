@@ -1,1 +1,1 @@
-master: {{ salt['pillar.get']('config:cluster:master_hostname', master) }}
+master: {{ master|default('rpi-master.local') }}
