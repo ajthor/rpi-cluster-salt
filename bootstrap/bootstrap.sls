@@ -11,14 +11,6 @@ install-salt:
       - which salt-master
       - which salt-minion
 
-# Set up the services for salt-minion.
-salt-minion-service:
-  service.running:
-    - name: salt-minion
-    - enable: True
-    - watch:
-      - file: /etc/salt/minion
-
 configure-salt:
   salt.state:
     - sls: bootstrap.configure

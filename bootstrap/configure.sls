@@ -12,11 +12,6 @@
   file.managed:
     - source: salt://pillar/top.sls
     - unless: test -f "/srv/pillar/top.sls"
-  file.append:
-    - source: salt://pillar/salt.tmpl
-    - template: jinja
-    - defaults:
-      - files: {{ files }}
 
 # Add pillar files to master.
 {% for f in files %}
@@ -63,3 +58,11 @@ update-salt-pillar:
 {% else %}
       master: {{ salt['pillar.get']('config:master_hostname') }}
 {% endif %}
+
+# Set up the services for salt-minion.
+salt-minion-service:
+  service.running:
+    - name: salt-minion
+    - enable: True
+    - watch:
+      - file: /etc/salt/minion
