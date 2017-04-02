@@ -8,8 +8,6 @@
     - source: salt://bootstrap/templates/master
     - template: jinja
     - unless: test -f "/etc/salt/master"
-    - require:
-      - salt: update-salt-pillar
 
 # Ensure the roster configuration file exists.
 /etc/salt/roster:
@@ -17,8 +15,6 @@
     - source: salt://bootstrap/templates/roster
     - template: jinja
     - unless: test -f "/etc/salt/roster"
-    - require:
-      - salt: update-salt-pillar
 {% endif %}
 
 # Ensure the minion configuration is up-to-date on all systems.
