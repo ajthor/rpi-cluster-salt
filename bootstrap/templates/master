@@ -10,11 +10,7 @@ fileserver_backend:
 
 gitfs_remotes:
 {% for r in remotes %}
-  - {{ r }}{% if r is iterable and r is not string %}:
-{% for e, b in r.iteritems() %}
-    {{ e }}: {{ b }}
-{%- endfor %}
-{% endif %}
+  - {{ r }}
 {%- endfor %}
 
 pillar_roots:

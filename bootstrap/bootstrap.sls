@@ -48,10 +48,6 @@ update-salt-pillar:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'rpi-master'
-    - onchanges:
-{% for f in files %}
-      - file: /srv/pillar/{{ f }}.sls
-{%- endfor %}
     - require:
 {% for f in files %}
       - file: /srv/pillar/{{ f }}.sls
