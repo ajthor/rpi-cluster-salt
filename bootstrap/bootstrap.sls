@@ -57,6 +57,8 @@ update-salt-pillar:
       - file: /srv/pillar/{{ f }}.sls
 {%- endfor %}
 
+{% endif %}
+
 configure-salt:
   salt.state:
     - sls: bootstrap.configure

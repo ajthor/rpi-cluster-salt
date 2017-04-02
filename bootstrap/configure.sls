@@ -1,6 +1,7 @@
 # This file configures Salt by making sure the pillar files are on the master
 # and by making sure the configuration files exist on the master and minions.
 
+{% if grains['host'] == 'rpi-master' %}
 # Ensure the master configuration is up-to-date.
 /etc/salt/master:
   file.managed:
