@@ -12,6 +12,8 @@ config:
   # to the cluster.
   master_host: rpi-master
   master_hostname: rpi-master.local
+
+{% if grains['host'] == 'rpi-master' %}
   # Minions can be added to the roster file directly, or they can be added
   # here so that they can be added using the configuration script. Minions
   # added in this way will retain all of the default settings, such as
@@ -27,6 +29,7 @@ config:
     # For example:
     # - https://github.com/ajthor/rpi-cluster-docker.git:
     #   - base: development
+{% endif %}
 
 # Raspbian-specific configuration.
 {% if grains['os'] == 'Raspbian' %}
