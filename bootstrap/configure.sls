@@ -8,18 +8,28 @@
 # to the master. These are things like the pillar files, the master and roster
 # configuration files, etc.
 
-/srv/pillar/top.sls:
-  file.managed:
-    - source: salt://pillar/top.sls
-    - unless: test -f "/srv/pillar/top.sls"
-
 # Add pillar files to master.
 {% for f in files %}
 /srv/pillar/{{ f }}.sls:
   file.managed:
     - source: salt://pillar/{{ f }}.sls
+    - makedirs: True
     - unless: test -f "/srv/pillar/{{ f }}.sls"
-{% endfor %}
+{%- endfor %}
+
+/srv/pillar/top.sls:
+  file.append:
+    - source: salt://pillar/top.sls
+    - template: jinja
+    - defaults:
+        # NOTE: Need extra spaces here to make this work. Add an extra tab for
+        # defaults in file.append states using jinja templating.
+        # https://github.com/saltstack/salt/issues/18686
+        files: {{ files }}
+    - require:
+{% for f in files %}
+      - file: /srv/pillar/{{ f }}.sls
+{%- endfor %}
 
 # Update the Salt pillar so that it has all relevant data.
 update-salt-pillar:
@@ -27,16 +37,19 @@ update-salt-pillar:
     - name: saltutil.refresh_pillar
     - tgt: 'rpi-master'
     - onchanges:
-      - file: /srv/pillar/top.sls
-      - file: /srv/pillar/config.sls
+{% for f in files %}
+      - file: /srv/pillar/{{ f }}.sls
+{%- endfor %}
     - require:
-      - file: /srv/pillar/top.sls
-      - file: /srv/pillar/config.sls
+{% for f in files %}
+      - file: /srv/pillar/{{ f }}.sls
+{%- endfor %}
 
 # Ensure the master configuration is up-to-date.
 /etc/salt/master:
   file.managed:
     - source: salt://bootstrap/templates/master
+    - template: jinja
     - unless: test -f "/etc/salt/master"
     - require:
       - salt: update-salt-pillar
@@ -56,14 +69,9 @@ update-salt-pillar:
   file.managed:
     - source: salt://bootstrap/templates/minion
     - template: jinja
-    - context:
 {% if grains['host'] == 'rpi-master' %}
+    - defaults:
       master: 127.0.0.1
-{% else %}
-      # NOTE: The template file tries to pull whatever value is in the pillar
-      # for the `master_hostname`. If no hostname is found in the pillar, this
-      # will default to `rpi-master.local`.
-      master: {{ salt['pillar.get']('config:master_hostname') }}
 {% endif %}
 
 # Set up the services for salt-minion.

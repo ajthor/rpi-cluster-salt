@@ -7,9 +7,11 @@
 #   sudo: True
 #
 
-{% for minion in salt['pillar.get']('config:cluster:minions') %}
-{{ minion }}:
-    host: {{ minion }}.local
+{% set minions = salt['pillar.get']('config:minions') %}
+
+{% for m in minions %}
+{{ m }}:
+    host: {{ m }}.local
     user: pi
     passwd: raspberry
     sudo: True

@@ -12,11 +12,7 @@ salt-bootstrap:
 
 salt-installation:
   cmd.run:
-{% if grains['host'] == 'rpi-master' %}
-    - name: sh bootstrap-salt.sh -M
-{% else %}
-    - name: sh bootstrap-salt.sh
-{% endif %}
+    - name: sh bootstrap-salt.sh {% if grains['host'] == 'rpi-master' %}-M{% endif %}
     - cwd: /tmp
     - unless:
       - which salt-master

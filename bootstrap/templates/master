@@ -1,3 +1,5 @@
+{% set remotes = salt['pillar.get']('config:gitfs_remotes', ['https://github.com/ajthor/rpi-cluster-salt.git']) %}
+
 file_roots:
   base:
     - /srv/salt
@@ -7,7 +9,13 @@ fileserver_backend:
   - roots
 
 gitfs_remotes:
-  - https://github.com/ajthor/rpi-cluster-salt.git
+{% for r in remotes %}
+  - {{ r }}{% if r is iterable and r is not string %}:
+{% for e, b in r.iteritems() %}
+    {{ e }}: {{ b }}
+{%- endfor %}
+{% endif %}
+{%- endfor %}
 
 pillar_roots:
   base:
