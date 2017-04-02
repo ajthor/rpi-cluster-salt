@@ -74,10 +74,10 @@ update-salt-pillar:
       master: 127.0.0.1
 {% endif %}
 
-# Set up the services for salt-minion.
-salt-minion-service:
-  service.running:
-    - name: salt-minion
-    - enable: True
-    - watch:
+# Restart salt-minion.
+restart-salt-minion:
+  cmd.run:
+    - name: 'salt-call --local service.restart salt-minion'
+    - bg: True
+    - onchanges:
       - file: /etc/salt/minion
