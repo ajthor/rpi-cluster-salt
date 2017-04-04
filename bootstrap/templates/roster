@@ -6,3 +6,13 @@
 #   passwd: raspberry
 #   sudo: True
 #
+
+{% set minions = salt['pillar.get']('config:minions') %}
+
+{% for m in minions %}
+{{ m }}:
+    host: {{ m }}.local
+    user: pi
+    passwd: raspberry
+    sudo: True
+{% endfor %}

@@ -1,1 +1,6 @@
-master: {{ master }}
+# If a value is passed as a default to the template, the template will use that
+# value. If no value is passed, the template tries to pull whatever value is in
+# the pillar for the `master_hostname`. If no hostname is found in the pillar,
+# this will default to `rpi-master.local`.
+
+master: {{ master|default(salt['pillar.get']('config:master_hostname', 'rpi-master.local')) }}
