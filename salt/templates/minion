@@ -2,5 +2,7 @@
 # value. If no value is passed, the template tries to pull whatever value is in
 # the pillar for the `master_hostname`. If no hostname is found in the pillar,
 # this will default to `rpi-master.local`.
-
 master: {{ master|default(salt['pillar.get']('config:master_hostname', 'rpi-master.local')) }}
+
+# Enable TLS module.
+ca.cert_base_path: '/etc/pki'

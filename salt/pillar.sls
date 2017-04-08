@@ -1,13 +1,3 @@
-# This state file is used by salt-ssh to install Salt and configure the files
-# necessary for our system to work properly. It is only used when bootstrapping
-# new nodes.
-
-# Install Salt on the target system.
-install-salt:
-  salt.state:
-    - sls: bootstrap.install
-    - tgt: '*'
-
 # Configure the Salt pillar.
 
 # The `files` variable in jinja holds a list of all of the pillar configuration
@@ -15,12 +5,7 @@ install-salt:
 # leading slashes, just as you would specify them in the top file.
 {% set files = ['config'] %}
 
-{% if grains['host'] == 'rpi-master' %}
-# Master-only configuration. Here, we need to create files that are exclusive
-# to the master. These are things like the pillar files, the master and roster
-# configuration files, etc.
-
-# Add pillar files to master.
+# Add pillar files.
 {% for f in files %}
 /srv/pillar/{{ f }}.sls:
   file.managed:
@@ -43,19 +28,13 @@ install-salt:
       - file: /srv/pillar/{{ f }}.sls
 {%- endfor %}
 
-# Update the Salt pillar so that it has all relevant data.
+# Update the Salt pillar.
 update-salt-pillar:
   salt.function:
     - name: saltutil.refresh_pillar
     - tgt: 'rpi-master'
     - require:
+      - file: /srv/pillar/top.sls
 {% for f in files %}
       - file: /srv/pillar/{{ f }}.sls
 {%- endfor %}
-
-{% endif %}
-
-configure-salt:
-  salt.state:
-    - sls: bootstrap.configure
-    - tgt: '*'
